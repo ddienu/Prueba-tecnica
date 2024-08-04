@@ -8,6 +8,9 @@ import java.util.List;
 
 public interface IInventoryService {
     List<Inventory> getAllInventories();
+    Inventory getInventoryById(Integer id) throws BadRequestException;
     Inventory saveInventory(InventoryRequestDto inventoryRequest) throws BadRequestException;
+    void updateInventory(Integer id, Integer quantityAvailable) throws BadRequestException;
+    void removeInventory(Integer id) throws BadRequestException;
 
 }

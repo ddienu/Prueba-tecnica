@@ -1,2 +1,10 @@
 
-œ	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ğ¨ø8êÌÜŞ‘2J$70357a9d-4d8d-4b1c-ad33-280241ff8aff
+œ
+java:S1192#"TDefine a constant instead of duplicating this literal "Inventory not found" 3 times.(ªĞŒşÿÿÿÿ8ÍÄõô‘2J$433f31f5-bda6-4680-ba5b-bac4ac4a5969
+œ	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(ğ¨ø8ïïô‘2J$fe3067d9-5ee6-4916-9bf6-20e202ab3102
+¨
+java:S3655%"`Call "inventoryFounded.isPresent()" or "!inventoryFounded.isEmpty()" before accessing the value.(î»”ÿÿÿÿÿÿ8È€öô‘2J$dba34c6e-e8ad-47e4-a552-391c572710eb
+£
+java:S3655C"`Call "inventoryFounded.isPresent()" or "!inventoryFounded.isEmpty()" before accessing the value.(³øâ8®ïïô‘2J$dc330074-3689-4c53-9616-2034d806deb1
+¨
+java:S3655:"`Call "inventoryFounded.isPresent()" or "!inventoryFounded.isEmpty()" before accessing the value.(•éı–ûÿÿÿÿ8­ïïô‘2J$19ba828a-fa80-4add-ae51-be18060497a1

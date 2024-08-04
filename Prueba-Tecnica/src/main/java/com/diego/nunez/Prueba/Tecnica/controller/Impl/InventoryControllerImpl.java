@@ -4,6 +4,7 @@ import com.diego.nunez.Prueba.Tecnica.controller.IInventoryController;
 import com.diego.nunez.Prueba.Tecnica.dto.InventoryRequestDto;
 import com.diego.nunez.Prueba.Tecnica.dto.Response;
 import com.diego.nunez.Prueba.Tecnica.dto.ResponseDataDto;
+import com.diego.nunez.Prueba.Tecnica.dto.UpdateInventoryDto;
 import com.diego.nunez.Prueba.Tecnica.entity.Inventory;
 import com.diego.nunez.Prueba.Tecnica.service.IInventoryService;
 import com.diego.nunez.Prueba.Tecnica.service.Impl.InventoryServiceImpl;
@@ -41,6 +42,20 @@ public class InventoryControllerImpl implements IInventoryController {
         );
     }
 
+    @GetMapping(path = "/{id}", produces = "application/json")
+    @Override
+    public ResponseEntity<Response> getInventoryById(@PathVariable Integer id) throws BadRequestException {
+        Inventory inventoryFounded = inventoryService.getInventoryById(id);
+        return new ResponseEntity<>(
+                new Response(
+                        ResponseDataDto.builder()
+                                .message("Inventory with id " + id + " is founded")
+                                .inventory(inventoryFounded)
+                                .build()
+                ), HttpStatus.OK
+        );
+    }
+
     @PostMapping(produces = "application/json")
     @Override
     public ResponseEntity<Response> saveNewInventory(@RequestBody InventoryRequestDto inventoryRequest) throws BadRequestException {
@@ -49,6 +64,32 @@ public class InventoryControllerImpl implements IInventoryController {
                 new Response(
                         ResponseDataDto.builder()
                                 .message("Inventory saved successfully")
+                                .build()
+                ), HttpStatus.OK
+        );
+    }
+
+    @PutMapping(produces = "application/json")
+    @Override
+    public ResponseEntity<Response> updateInventory(@RequestBody UpdateInventoryDto inventoryToUpdate) throws BadRequestException {
+        inventoryService.updateInventory(inventoryToUpdate.getInventoryId(), inventoryToUpdate.getQuantityAvailable());
+        return new ResponseEntity<>(
+                new Response(
+                        ResponseDataDto.builder()
+                                .message("Inventory updated successfully")
+                                .build()
+                ), HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping(path = "/{id}", produces = "application/json")
+    @Override
+    public ResponseEntity<Response> removeInventory(@PathVariable Integer id) throws BadRequestException {
+        inventoryService.removeInventory(id);
+        return new ResponseEntity<>(
+                new Response(
+                        ResponseDataDto.builder()
+                                .message("Inventory removed successfully")
                                 .build()
                 ), HttpStatus.OK
         );
