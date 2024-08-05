@@ -17,7 +17,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    private User user;
+    private Users user;
     @ManyToMany
     private List<Product> products;
     private LocalDateTime creationDate;

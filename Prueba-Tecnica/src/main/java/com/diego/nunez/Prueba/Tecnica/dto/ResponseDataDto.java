@@ -19,5 +19,6 @@ public class ResponseDataDto implements Serializable {
     private Product product;
     private List<Inventory> inventories;
     private Inventory inventory;
+    private String token;
 
 }
