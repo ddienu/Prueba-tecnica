@@ -1,6 +1,7 @@
 package com.diego.nunez.Prueba.Tecnica.dto;
 
 import com.diego.nunez.Prueba.Tecnica.entity.Inventory;
+import com.diego.nunez.Prueba.Tecnica.entity.Order;
 import com.diego.nunez.Prueba.Tecnica.entity.Product;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -20,5 +21,6 @@ public class ResponseDataDto implements Serializable {
     private List<Inventory> inventories;
     private Inventory inventory;
     private String token;
+    private List<Order> orders;
 
 }
