@@ -10,8 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -122,6 +125,29 @@ public class GlobalExceptionHandler {
                 new Response(
                         ResponseDataDto.builder()
                                 .message("Invalid token")
+                                .build()
+                ), HttpStatus.BAD_REQUEST
+        );
+    }
+
+    //Exception that validates the entity in the request body.
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Response> handleValidationException(MethodArgumentNotValidException e) {
+        return new ResponseEntity<>(
+                new Response(
+                        ResponseDataDto.builder()
+                                .message(e.getBindingResult().getAllErrors().get(0).getDefaultMessage())
+                                .build()
+                ), HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<Response> sqlIntegrityExceptionHandler(SQLIntegrityConstraintViolationException e) {
+        return new ResponseEntity<>(
+                new Response(
+                        ResponseDataDto.builder()
+                                .message("The email has already taken")
                                 .build()
                 ), HttpStatus.BAD_REQUEST
         );

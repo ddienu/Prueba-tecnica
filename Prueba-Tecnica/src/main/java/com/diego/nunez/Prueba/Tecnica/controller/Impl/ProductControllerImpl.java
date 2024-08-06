@@ -55,7 +55,7 @@ public class ProductControllerImpl implements IProductController {
 
     @PostMapping(produces = "application/json")
     @Override
-    public ResponseEntity<Response> saveProduct(@RequestBody @Valid Product product) {
+    public ResponseEntity<Response> saveProduct(@Valid @RequestBody Product product) {
         productService.saveProduct(product);
         return new ResponseEntity<>(
                 new Response(

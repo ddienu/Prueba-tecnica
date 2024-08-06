@@ -58,7 +58,7 @@ public class InventoryControllerImpl implements IInventoryController {
 
     @PostMapping(produces = "application/json")
     @Override
-    public ResponseEntity<Response> saveNewInventory(@RequestBody InventoryRequestDto inventoryRequest) throws BadRequestException {
+    public ResponseEntity<Response> saveNewInventory(@Valid @RequestBody InventoryRequestDto inventoryRequest) throws BadRequestException {
         inventoryService.saveInventory(inventoryRequest);
         return new ResponseEntity<>(
                 new Response(
@@ -71,7 +71,7 @@ public class InventoryControllerImpl implements IInventoryController {
 
     @PutMapping(produces = "application/json")
     @Override
-    public ResponseEntity<Response> updateInventory(@RequestBody UpdateInventoryDto inventoryToUpdate) throws BadRequestException {
+    public ResponseEntity<Response> updateInventory(@Valid @RequestBody UpdateInventoryDto inventoryToUpdate) throws BadRequestException {
         inventoryService.updateInventory(inventoryToUpdate.getInventoryId(), inventoryToUpdate.getQuantityAvailable());
         return new ResponseEntity<>(
                 new Response(

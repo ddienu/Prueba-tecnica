@@ -11,6 +11,7 @@ import com.diego.nunez.Prueba.Tecnica.repository.IUserRepository;
 import com.diego.nunez.Prueba.Tecnica.service.Impl.JwtServiceImpl;
 import com.diego.nunez.Prueba.Tecnica.service.Impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class OrderControllerImpl implements IOrderController {
 
     @PostMapping(produces = "application/json")
     @Override
-    public ResponseEntity<Response> createOrder(@RequestBody OrderRequest order, HttpServletRequest request) throws BadRequestException {
+    public ResponseEntity<Response> createOrder(@Valid @RequestBody OrderRequest order, HttpServletRequest request) throws BadRequestException {
         String token = jwtService.getTokenFromRequest(request);
         String email = jwtService.getEmailFromToken(token);
         List<Integer> productList = new ArrayList<>();
