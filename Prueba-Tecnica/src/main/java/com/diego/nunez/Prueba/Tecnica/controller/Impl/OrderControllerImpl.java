@@ -43,16 +43,14 @@ public class OrderControllerImpl implements IOrderController {
         String token = jwtService.getTokenFromRequest(request);
         String email = jwtService.getEmailFromToken(token);
         List<Integer> productList = new ArrayList<>();
-        List<Integer> quantities = new ArrayList<>();
         Map<Integer, Integer> relationOrder = new HashMap<>();
         for(ProductRequest productRequest : order.getProducts()){
             Integer productId = productRequest.getProductId();
             Integer quantity = productRequest.getQuantity();
             productList.add(productId);
-            quantities.add(quantity);
             relationOrder.put(productId, quantity);
         }
-        orderService.createOrder(email, productList, quantities, relationOrder);
+        orderService.createOrder(email, productList, relationOrder);
         return new ResponseEntity<>(
                 new Response(
                         ResponseDataDto.builder()

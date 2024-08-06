@@ -3,16 +3,20 @@ package com.diego.nunez.Prueba.Tecnica.service.Impl;
 import com.diego.nunez.Prueba.Tecnica.entity.Order;
 import com.diego.nunez.Prueba.Tecnica.entity.Product;
 import com.diego.nunez.Prueba.Tecnica.entity.Users;
+import com.diego.nunez.Prueba.Tecnica.exception.EmptyProductListException;
+import com.diego.nunez.Prueba.Tecnica.exception.NoOrdersFoundedException;
+import com.diego.nunez.Prueba.Tecnica.exception.UnprocessableOrderException;
 import com.diego.nunez.Prueba.Tecnica.repository.IOrderRepository;
 import com.diego.nunez.Prueba.Tecnica.repository.IProductRepository;
 import com.diego.nunez.Prueba.Tecnica.repository.IUserRepository;
 import com.diego.nunez.Prueba.Tecnica.service.IOrderService;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,27 +34,29 @@ public class OrderServiceImpl implements IOrderService {
         this.userRepository = userRepository;
     }
     @Override
-    public Order createOrder(String email, List<Integer> productIds, List<Integer> quantities, Map<Integer, Integer> relationOrder) throws BadRequestException {
+    public Order createOrder(String email, List<Integer> productIds, Map<Integer, Integer> relationOrder){
         Users userFounded = userRepository.getUserByEmail(email).orElseThrow(
-                () -> new BadRequestException("User not found")
+                () -> new BadCredentialsException("User not found")
         );
         List<Product> productList = productRepository.findAllById(productIds);
+        if( productList.isEmpty()){
+            throw new EmptyProductListException("Please add a product to your list");
+        }
         Integer sumQuantity = 0;
         double prices = 0;
 
-        for( Integer quantity : quantities){
-            sumQuantity += quantity;
+        for(Integer quantity : relationOrder.values()){
+            sumQuantity+=quantity;
         }
 
-        for( int i = 0; i < productIds.size(); i++){
-            Product product = productRepository.findById(productIds.get(i)).get();
-            for(int j = 0; j < productIds.size(); j++){
-                 prices+=product.getPrice()*quantities.get(i);
-                break;
+        for(Map.Entry<Integer, Integer> entry : relationOrder.entrySet()){
+            Integer productId = entry.getKey();
+            Product productFounded = productRepository.findById(productId).get();
+            Integer quantity = entry.getValue();
+            if( quantity > productFounded.getStock()){
+                throw new UnprocessableOrderException("The order exceeds the product stock");
             }
-        }
-        if( productList.isEmpty()){
-            throw new BadRequestException("Please add a product to your list");
+            prices += productFounded.getPrice() * quantity;
         }
         Order orderCreated = Order.builder()
                 .user(userFounded)
@@ -66,7 +72,11 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public List<Order> getOrdersByUser(Integer userId) {
-        return orderRepository.findOrdersByUserId(userId);
+        List<Order> ordersFounded = orderRepository.findOrdersByUserId(userId);
+        if(ordersFounded.isEmpty()){
+            throw new NoOrdersFoundedException("No orders founded for this user");
+        }
+        return ordersFounded;
     }
 
     @Override
@@ -76,14 +86,18 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public Order updateOrderStatus(Integer orderId, String newStatus) {
-        Order order = orderRepository.findById(orderId).get();
+        Order order = orderRepository.findById(orderId).orElseThrow(
+                () -> new NoOrdersFoundedException("No order founded with id: " + orderId)
+        );
         order.setStatus(newStatus.toUpperCase());
         return orderRepository.save(order);
     }
 
     @Override
     public void removeOrder(Integer orderId) {
-        Order orderFounded = orderRepository.findById(orderId).get();
+        Order orderFounded = orderRepository.findById(orderId).orElseThrow(
+                () -> new NoOrdersFoundedException("No order founded with id: " + orderId)
+        );
         orderRepository.delete(orderFounded);
     }
 }

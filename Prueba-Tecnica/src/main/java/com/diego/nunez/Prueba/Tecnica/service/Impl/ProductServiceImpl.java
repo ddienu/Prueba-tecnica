@@ -1,6 +1,7 @@
 package com.diego.nunez.Prueba.Tecnica.service.Impl;
 
 import com.diego.nunez.Prueba.Tecnica.entity.Product;
+import com.diego.nunez.Prueba.Tecnica.exception.ProductNotFoundException;
 import com.diego.nunez.Prueba.Tecnica.repository.IProductRepository;
 import com.diego.nunez.Prueba.Tecnica.service.IProductService;
 import org.apache.coyote.BadRequestException;
@@ -25,7 +26,9 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public Optional<Product> getProductById(Integer id) {
-        return productRepository.findById(id);
+        return Optional.ofNullable(productRepository.findById(id).orElseThrow(
+                () -> new ProductNotFoundException("Product not found")
+        ));
     }
 
     @Override
@@ -34,11 +37,10 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public Product putProduct(Integer id, Product productToUpdate) throws BadRequestException {
-        Product product = productRepository.getReferenceById(id);
-        if( product == null ){
-            throw new BadRequestException("No product founded");
-        }
+    public Product putProduct(Integer id, Product productToUpdate){
+        Product product = productRepository.findById(id).orElseThrow(
+                () -> new ProductNotFoundException("Product not found")
+        );
         if( !product.getCategory().equals(productToUpdate.getCategory())){
             product.setCategory(productToUpdate.getCategory());
         }else if( !product.getName().equals(productToUpdate.getName())){
@@ -53,11 +55,10 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.save(product);
     }
     @Override
-    public void deleteProduct(Integer id) throws BadRequestException {
-        Product productToErase = productRepository.getReferenceById(id);
-        if( productToErase == null){
-            throw new BadRequestException("Product not founded");
-        }
+    public void deleteProduct(Integer id){
+        Product productToErase = productRepository.findById(id).orElseThrow(
+                () -> new ProductNotFoundException("Product not founded")
+        );
         productRepository.delete(productToErase);
     }
 }

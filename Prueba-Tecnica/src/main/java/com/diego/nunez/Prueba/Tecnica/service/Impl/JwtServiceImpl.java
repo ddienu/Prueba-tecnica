@@ -14,6 +14,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class JwtServiceImpl implements IJwtService {
 
     private String getToken(Map<String, Object> extraClaims, UserDto user) {
         Optional<Users> userFounded = Optional.ofNullable(userRepository.getUserByEmail(user.getEmail()).orElseThrow(() ->
-                new UsernameNotFoundException("User not found")));
+                new BadCredentialsException("User not found")));
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

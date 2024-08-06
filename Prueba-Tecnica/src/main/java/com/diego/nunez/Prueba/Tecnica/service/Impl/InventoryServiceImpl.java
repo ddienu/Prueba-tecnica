@@ -3,6 +3,8 @@ package com.diego.nunez.Prueba.Tecnica.service.Impl;
 import com.diego.nunez.Prueba.Tecnica.dto.InventoryRequestDto;
 import com.diego.nunez.Prueba.Tecnica.entity.Inventory;
 import com.diego.nunez.Prueba.Tecnica.entity.Product;
+import com.diego.nunez.Prueba.Tecnica.exception.InventoryNotFoundException;
+import com.diego.nunez.Prueba.Tecnica.exception.ProductNotFoundException;
 import com.diego.nunez.Prueba.Tecnica.repository.IInventoryRepository;
 import com.diego.nunez.Prueba.Tecnica.repository.IProductRepository;
 import com.diego.nunez.Prueba.Tecnica.service.IInventoryService;
@@ -32,7 +34,7 @@ public class InventoryServiceImpl implements IInventoryService {
     @Override
     public Inventory getInventoryById(Integer id) throws BadRequestException {
         Optional<Inventory> inventoryFounded = Optional.ofNullable(inventoryRepository.findById(id).orElseThrow(
-                () -> new BadRequestException("Inventory not found")
+                () -> new InventoryNotFoundException("Inventory not found")
         ));
         return inventoryFounded.get();
     }
@@ -40,7 +42,7 @@ public class InventoryServiceImpl implements IInventoryService {
     @Override
     public Inventory saveInventory(InventoryRequestDto inventoryRequest) throws BadRequestException {
         Optional<Product> productFounded = Optional.ofNullable(productRepository.findById(inventoryRequest.getProductId()).orElseThrow(
-                () -> new BadRequestException("Product not found")
+                () -> new ProductNotFoundException("Product not found")
         ));
         Inventory inventory = new Inventory();
         if( productFounded.isPresent()){
@@ -53,7 +55,7 @@ public class InventoryServiceImpl implements IInventoryService {
     @Override
     public void updateInventory(Integer id, Integer quantityAvailable) throws BadRequestException {
        Optional<Inventory> inventoryFounded = Optional.ofNullable(inventoryRepository.findById(id).orElseThrow(
-                () -> new BadRequestException("Inventory not found")
+                () -> new InventoryNotFoundException("Inventory not found")
         ));
        inventoryFounded.get().setQuantityAvailable(quantityAvailable);
        inventoryRepository.save(inventoryFounded.get());
@@ -62,7 +64,7 @@ public class InventoryServiceImpl implements IInventoryService {
     @Override
     public void removeInventory(Integer id) throws BadRequestException {
         Optional<Inventory> inventoryFounded = Optional.ofNullable(inventoryRepository.findById(id).orElseThrow(
-                () -> new BadRequestException("Inventory not found")
+                () -> new InventoryNotFoundException("Inventory not found")
         ));
         inventoryRepository.delete(inventoryFounded.get());
     }

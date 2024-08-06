@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface IOrderService {
 
-    Order createOrder(String email, List<Integer> productIds, List<Integer> quantity, Map<Integer, Integer> relationOrder) throws BadRequestException;
+    Order createOrder(String email, List<Integer> productIds, Map<Integer, Integer> relationOrder);
     List<Order> getOrdersByUser(Integer userId);
     List<Order> getAllOrders();
     Order updateOrderStatus(Integer orderId, String newStatus);

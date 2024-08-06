@@ -11,6 +11,6 @@ public interface IProductService {
     List<Product> getAllProducts();
     Optional<Product> getProductById(Integer id);
     Product saveProduct(Product product);
-    Product putProduct(Integer id, Product productToUpdate) throws BadRequestException;
-    void deleteProduct(Integer id) throws BadRequestException;
+    Product putProduct(Integer id, Product productToUpdate);
+    void deleteProduct(Integer id);
 }
