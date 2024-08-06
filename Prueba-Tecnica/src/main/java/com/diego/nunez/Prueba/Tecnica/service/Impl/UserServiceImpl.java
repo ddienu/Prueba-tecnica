@@ -13,8 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -59,7 +57,7 @@ public class UserServiceImpl implements IUserService {
             user.setEmail(user.getEmail());
             return userRepository.save(user);
         }
-        throw new SQLIntegrityConstraintViolationException("The username already exist");
+        throw new SQLIntegrityConstraintViolationException("The email already exist");
     }
 
     @Override

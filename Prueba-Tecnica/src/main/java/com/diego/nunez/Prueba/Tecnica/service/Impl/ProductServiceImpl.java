@@ -43,13 +43,17 @@ public class ProductServiceImpl implements IProductService {
         );
         if( !product.getCategory().equals(productToUpdate.getCategory())){
             product.setCategory(productToUpdate.getCategory());
-        }else if( !product.getName().equals(productToUpdate.getName())){
+        }
+        if( !product.getName().equals(productToUpdate.getName())){
             product.setName(productToUpdate.getName());
-        }else if( !product.getStock().equals(productToUpdate.getStock())){
+        }
+        if( !product.getStock().equals(productToUpdate.getStock())){
             product.setStock(productToUpdate.getStock());
-        }else if( !product.getPrice().equals(productToUpdate.getPrice())){
+        }
+        if( !product.getPrice().equals(productToUpdate.getPrice())){
             product.setPrice(productToUpdate.getPrice());
-        }else if( !product.getDescription().equals(productToUpdate.getDescription())){
+        }
+        if( !product.getDescription().equals(productToUpdate.getDescription())){
             product.setDescription(productToUpdate.getDescription());
         }
         return productRepository.save(product);
