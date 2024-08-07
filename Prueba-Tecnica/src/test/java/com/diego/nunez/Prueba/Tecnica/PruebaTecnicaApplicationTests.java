@@ -39,4 +39,5 @@ class PruebaTecnicaApplicationTests {
 	void contextLoads() {
 		assertNotNull(authController);
 	}
+
 }

@@ -32,7 +32,7 @@ public class InventoryServiceImpl implements IInventoryService {
     }
 
     @Override
-    public Inventory getInventoryById(Integer id) throws BadRequestException {
+    public Inventory getInventoryById(Integer id){
         Optional<Inventory> inventoryFounded = Optional.ofNullable(inventoryRepository.findById(id).orElseThrow(
                 () -> new InventoryNotFoundException("Inventory not found")
         ));
@@ -40,7 +40,7 @@ public class InventoryServiceImpl implements IInventoryService {
     }
 
     @Override
-    public Inventory saveInventory(InventoryRequestDto inventoryRequest) throws BadRequestException {
+    public Inventory saveInventory(InventoryRequestDto inventoryRequest){
         Optional<Product> productFounded = Optional.ofNullable(productRepository.findById(inventoryRequest.getProductId()).orElseThrow(
                 () -> new ProductNotFoundException("Product not found")
         ));
@@ -53,7 +53,7 @@ public class InventoryServiceImpl implements IInventoryService {
     }
 
     @Override
-    public void updateInventory(Integer id, Integer quantityAvailable) throws BadRequestException {
+    public void updateInventory(Integer id, Integer quantityAvailable) {
        Optional<Inventory> inventoryFounded = Optional.ofNullable(inventoryRepository.findById(id).orElseThrow(
                 () -> new InventoryNotFoundException("Inventory not found")
         ));
@@ -62,7 +62,7 @@ public class InventoryServiceImpl implements IInventoryService {
     }
 
     @Override
-    public void removeInventory(Integer id) throws BadRequestException {
+    public void removeInventory(Integer id){
         Optional<Inventory> inventoryFounded = Optional.ofNullable(inventoryRepository.findById(id).orElseThrow(
                 () -> new InventoryNotFoundException("Inventory not found")
         ));

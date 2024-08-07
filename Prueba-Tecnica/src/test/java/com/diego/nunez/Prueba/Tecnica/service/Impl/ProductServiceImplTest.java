@@ -122,6 +122,7 @@ public class ProductServiceImplTest {
     @Test
     void deleteProductOk(){
         Integer id = 1;
+
         Product product = new Product();
         product.setId(id);
 

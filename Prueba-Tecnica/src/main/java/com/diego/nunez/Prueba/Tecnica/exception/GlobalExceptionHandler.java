@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
                         ResponseDataDto.builder()
                                 .message(e.getMessage())
                                 .build()
-                ), HttpStatus.BAD_REQUEST
+                ), HttpStatus.UNAUTHORIZED
         );
     }
 

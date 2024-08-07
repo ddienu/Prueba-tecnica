@@ -21,7 +21,7 @@ import com.mysql.cj.util.StringUtils;
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class  JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtServiceImpl jwtService;
     private final CustomUserDetailsService userDetailsService;

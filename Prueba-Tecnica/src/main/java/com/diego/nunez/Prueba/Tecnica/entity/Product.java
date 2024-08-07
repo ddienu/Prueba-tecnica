@@ -16,7 +16,9 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotBlank(message = "The name cannot be empty")
     private String name;
+    @NotBlank(message = "Descrption cannot be empty")
     private String description;
     @Min(value = 1, message = "Price must be greater than 0")
     private Double price;

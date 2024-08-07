@@ -42,7 +42,7 @@ public class JwtServiceImpl implements IJwtService {
         return getToken(new HashMap<>(), user);
     }
 
-    private String getToken(Map<String, Object> extraClaims, UserDto user) {
+    public String getToken(Map<String, Object> extraClaims, UserDto user) {
         Optional<Users> userFounded = Optional.ofNullable(userRepository.getUserByEmail(user.getEmail()).orElseThrow(() ->
                 new BadCredentialsException("User not found")));
         return Jwts
